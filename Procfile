@@ -1,1 +1,1 @@
-web: python busimageparsing.py
+web: gunicorn busimageparsing:app
