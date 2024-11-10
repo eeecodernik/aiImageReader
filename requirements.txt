@@ -1,0 +1,6 @@
+flask
+flask-cors
+pillow
+pytesseract
+anthropic
+gunicorn
