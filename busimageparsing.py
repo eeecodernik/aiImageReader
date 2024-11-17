@@ -1,11 +1,19 @@
 import re
 import os
 import pytesseract
+import subprocess
 from io import BytesIO
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 from anthropic import Anthropic
 from PIL import Image
+
+# Check where Tesseract is installed
+try:
+    tesseract_path = subprocess.check_output(['which', 'tesseract']).decode().strip()
+    print(f"Tesseract found at: {tesseract_path}")
+except Exception as e:
+    print(f"Error finding Tesseract: {e}")
 
 # Initialize Flask app
 app = Flask(__name__)
