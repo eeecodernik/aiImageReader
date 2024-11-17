@@ -1,17 +1,24 @@
-# Use an official Python image as the base
-FROM python:3.11-slim
+# Use a lightweight Alpine Linux image
+FROM alpine:3.20
 
-# Install Tesseract OCR and its dependencies
-RUN apt-get update && apt-get install -y \
+# Install necessary packages and Tesseract OCR
+RUN apk update && apk upgrade && apk add --no-cache \
     tesseract-ocr \
-    libtesseract-dev \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
+    tesseract-ocr-data-eng \
+    python3 \
+    py3-pip \
+    build-base \
+    jpeg-dev \
+    zlib-dev \
+    libpng-dev \
+    gcc \
+    musl-dev \
+    bash
 
-# Set the working directory inside the container
+# Set the working directory
 WORKDIR /app
 
-# Copy all the project files into the container
+# Copy all files to the working directory
 COPY . .
 
 # Install Python dependencies
@@ -20,8 +27,8 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Set the Tesseract path in your environment variables
 ENV TESSERACT_PATH=/usr/bin/tesseract
 
-# Expose the port your app runs on
+# Expose the port the app runs on
 EXPOSE 5000
 
-# Start the application using gunicorn
+# Run the application using gunicorn
 CMD ["gunicorn", "busimageparsing:app", "-b", "0.0.0.0:5000"]
