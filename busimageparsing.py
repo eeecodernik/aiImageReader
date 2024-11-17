@@ -8,19 +8,13 @@ from flask_cors import CORS
 from anthropic import Anthropic
 from PIL import Image
 
-# Check where Tesseract is installed
-try:
-    tesseract_path = subprocess.check_output(['which', 'tesseract']).decode().strip()
-    print(f"Tesseract found at: {tesseract_path}")
-except Exception as e:
-    print(f"Error finding Tesseract: {e}")
+# Set the path to the Tesseract executable
+pytesseract.pytesseract.tesseract_cmd = os.getenv("TESSERACT_PATH", "/usr/bin/tesseract")
 
 # Initialize Flask app
 app = Flask(__name__)
 CORS(app)  # Enable CORS to avoid cross-origin issues
 
-# Set the path from the environment variable
-pytesseract.pytesseract.tesseract_cmd = os.getenv('TESSERACT_CMD', '/usr/bin/tesseract')
 
 # Replace with your actual Anthropic API key
 api_key = os.getenv('ANTHROPIC_API_KEY')
